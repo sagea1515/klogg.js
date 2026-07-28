@@ -6,7 +6,7 @@
     <title>Klogg.js</title>
     <style>
        *, *:before, *:after { box-sizing: inherit; font-family: inherit; }
-       body { font-family: menlo, monospace; font-size: 11px; padding: 0; margin: 0; -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; box-sizing:border-box; }
+       body { font-family: menlo, monospace; font-size: 11px; padding: 0; height: 100vh; margin: 0; -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; box-sizing:border-box; }
       
       /* Log level accent highlights */
       .log-row-error { background-color: rgba(241, 76, 76, 0.15) !important; color: #f14c4c !important; }
@@ -19,7 +19,7 @@
     </style>
   </head>
   <body>
-    <div style="background: #252526; color: #fff; padding: 10px; font-family: sans-serif; margin: 0 auto;">
+    <div style="background: #252526; color: #fff; padding: 10px; font-family: sans-serif; margin: 0 auto; height: 100%;">
       <!-- System Resource Health Status Tracker Bar -->
       <div style="display: flex; justify-content: space-between; font-size: 11px; background: #1e1e1e; padding: 4px 8px; border-radius: 4px; margin-bottom: 8px; border: 1px solid #333;">
         <div>System RAM: <span id="sysRamMetric">--</span> GB</div>
