@@ -3,11 +3,11 @@
   <head>
     <meta name="google" content="notranslate">
     <meta name="referrer" content="no-referrer">
-    <title>Title here</title>
-    <link rel="stylesheet" type="text/css" href="" media="screen"/>
+    <title>Klogg.js</title>
     <style>
        *, *:before, *:after { box-sizing: inherit; font-family: inherit; }
        body { font-family: menlo, monospace; font-size: 11px; padding: 0; margin: 0; -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; box-sizing:border-box; }
+      
       /* Log level accent highlights */
       .log-row-error { background-color: rgba(241, 76, 76, 0.15) !important; color: #f14c4c !important; }
       .log-row-warn  { background-color: rgba(204, 153, 0, 0.12) !important; color: #cca300 !important; }
@@ -15,77 +15,10 @@
       .log-row-debug { color: #6a9955 !important; opacity: 0.7; }
 
       /* Styled text labels */
-      .log-badge {
-        padding: 1px 5px;
-        border-radius: 3px;
-        font-weight: bold;
-        font-size: 11px;
-        margin-right: 5px;
-        background: rgba(255,255,255,0.1);
-      }
+      .log-badge { padding: 1px 5px; border-radius: 3px; font-weight: bold; font-size: 11px; margin-right: 5px; background: rgba(255,255,255,0.1); }
     </style>
   </head>
   <body>
-    <!-- V1
-    <div id="scrollViewport" title="The visible viewport with a fixed height and scrollbars" style="height: 500px; overflow-y: auto; position: relative; background: #1e1e1e; color: #d4d4d4; font-family: monospace;">
-      <div id="scrollPhantom" title="This invisible element pushes the scrollbar to match the total log length" style="position: absolute; width: 100%; top: 0; left: 0; pointer-events: none;"></div>
-      <div id="visibleLinesContainer" title="The dynamic layer containing only the visible line elements" style="position: absolute; top: 0; left: 0; width: 100%;"></div>
-    </div>-->
-
-    <!-- V2
-    <div style="display: flex; position: relative; max-width: 900px;">
-      <div id="scrollViewport" title="Our existing virtualized viewport" style="flex-grow: 1; height: 500px; overflow-y: auto; position: relative; background: #1e1e1e; color: #d4d4d4; font-family: monospace;">
-        <div id="scrollPhantom" style="position: absolute; width: 100%; top: 0; left: 0;"></div>
-        <div id="visibleLinesContainer" style="position: absolute; top: 0; left: 0; width: 100%;"></div>
-      </div>
-      <canvas id="minimapCanvas" title="The Klogg-style search minimap canvas" width="30" height="500" style="background: #252526; cursor: pointer; border-left: 1px solid #3c3c3c; user-select: none;"></canvas>
-    </div>-->
-
-    <!-- V3
-
-    <div title="With Control Panel & Unified Layout " style="background: #252526; color: #fff; padding: 10px; font-family: sans-serif; max-width: 930px;">
-      <div title="Query Control Panel" style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
-        <input type="text" id="searchInput" placeholder="Enter regex pattern (e.g., ERROR|WARN)..." style="flex-grow: 1; padding: 6px; background: #3c3c3c; border: 1px solid #6b6b6b; color: #fff; border-radius: 4px; font-family: monospace;">
-        <label style="font-size: 13px; display: flex; align-items: center; gap: 4px;"><input type="checkbox" id="filterModeCheckbox"> Show matches only</label>
-        <label style="font-size: 13px; display: flex; align-items: center; gap: 4px; color: #00ff66;" title="Add this toggle button right next to your filter checkbox in the control panel"><input type="checkbox" id="tailModeCheckbox"> Live Tail (Follow)</label>
-        <span id="searchMetrics" style="font-size: 13px; color: #aaaaaa;">0 matches found</span>
-      </div>
-      <div style="display: flex; position: relative;" title="Unified Viewport and Minimap Layout">
-        <div id="scrollViewport" style="flex-grow: 1; height: 500px; overflow-y: auto; position: relative; background: #1e1e1e; color: #d4d4d4; font-family: monospace;">
-          <div id="scrollPhantom" style="position: absolute; width: 100%; top: 0; left: 0;"></div>
-          <div id="visibleLinesContainer" style="position: absolute; top: 0; left: 0; width: 100%;"></div>
-        </div>
-        <canvas id="minimapCanvas" width="30" height="500" style="background: #252526; cursor: pointer; border-left: 1px solid #3c3c3c; user-select: none;"></canvas>
-      </div>
-    </div> -->
-
-
-    <!-- V4
-    <div style="background: #252526; color: #fff; padding: 10px; font-family: sans-serif; max-width: 930px; margin: 0 auto;">
-      <div title="Query Control Panel" style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
-        <button id="openFileBtn" style="padding: 6px 12px; background: #0e639c; color: white; border: none; border-radius: 4px; cursor: pointer;">Open Log File</button>
-        <input type="text" id="searchInput" placeholder="Enter regex pattern (e.g., ERROR|WARN)..." style="flex-grow: 1; padding: 6px; background: #3c3c3c; border: 1px solid #6b6b6b; color: #fff; border-radius: 4px; font-family: monospace;">
-        <label style="font-size: 13px; display: flex; align-items: center; gap: 4px;">
-          <input type="checkbox" id="filterModeCheckbox"> Show matches only
-        </label>
-        <label style="font-size: 13px; display: flex; align-items: center; gap: 4px; color: #00ff66;">
-          <input type="checkbox" id="tailModeCheckbox"> Live Tail (Follow)
-        </label>
-        <span id="searchMetrics" style="font-size: 13px; color: #aaaaaa; white-space: nowrap;">0 matches found</span>
-      </div>
-
-      <div title="Unified Viewport and Minimap Layout" style="display: flex; position: relative; border: 1px solid #3c3c3c;">
-        <div title="Horizontal Scrolling Wrapper Layer" style="flex-grow: 1; overflow-x: auto; background: #1e1e1e;">
-          <div title="Vertical Viewport Scroll Container" id="scrollViewport" style="height: 500px; overflow-y: auto; overflow-x: hidden; position: relative;">
-            <div id="scrollPhantom" style="position: absolute; width: 100%; top: 0; left: 0; pointer-events: none;"></div>
-            <div title="width: max-content ensures row backgrounds stretch all the way right along long strings" id="visibleLinesContainer" style="position: absolute; top: 0; left: 0; width: max-content; min-width: 100%;"></div>
-          </div>
-        </div>
-        <canvas id="minimapCanvas" width="30" height="500" style="background: #252526; cursor: pointer; border-left: 1px solid #3c3c3c; user-select: none; flex-shrink: 0;"></canvas>
-      </div>
-    </div> -->
-
-
     <div style="background: #252526; color: #fff; padding: 10px; font-family: sans-serif; max-width: 930px; margin: 0 auto;">
       <!-- System Resource Health Status Tracker Bar -->
       <div style="display: flex; justify-content: space-between; font-size: 11px; background: #1e1e1e; padding: 4px 8px; border-radius: 4px; margin-bottom: 8px; border: 1px solid #333;">
